@@ -1,0 +1,302 @@
+[
+  {
+    "id": "c686e511-493a-48b2-8cf4-ced612c4ad07",
+    "service": "general",
+    "question": "¿Quiénes son?",
+    "answer": "Somos Vualdex, una empresa especializada en soluciones tecnológicas, desarrollo de software, videovigilancia, licenciamiento de software y mantenimiento de equipos de cómputo."
+  },
+  {
+    "id": "6ba95482-97d4-4813-90d2-8353f5e1851b",
+    "service": "general",
+    "question": "¿Qué servicios ofrecen?",
+    "answer": "Ofrecemos desarrollo de software a medida, instalación de cámaras de seguridad, licenciamiento de software y mantenimiento de equipos de cómputo."
+  },
+  {
+    "id": "233d012e-298a-4bde-acf0-72fdfc245ecb",
+    "service": "general",
+    "question": "¿En qué ciudades trabajan?",
+    "answer": "Prestamos servicios en diversas ciudades de México. La cobertura depende del servicio solicitado."
+  },
+  {
+    "id": "0b430c3d-f808-4e08-a4d2-bdc86b6073fc",
+    "service": "general",
+    "question": "¿Trabajan de forma remota?",
+    "answer": "Sí, los servicios de desarrollo de software y algunas consultorías pueden realizarse completamente en modalidad remota."
+  },
+  {
+    "id": "a0d84f61-87bf-4ada-93b9-96d1ee9f1960",
+    "service": "general",
+    "question": "¿Emiten factura?",
+    "answer": "Sí, emitimos facturas fiscales para todos nuestros servicios y productos."
+  },
+  {
+    "id": "13ce06e9-b48c-4e5c-a1d8-b991e3109810",
+    "service": "software",
+    "question": "¿Qué tipo de software desarrollan?",
+    "answer": "Desarrollamos sistemas web, aplicaciones empresariales, portales de clientes, automatizaciones, APIs y soluciones personalizadas."
+  },
+  {
+    "id": "3f63e7ef-e833-4f10-97ef-1f0a1ca8b119",
+    "service": "software",
+    "question": "¿Desarrollan software a medida?",
+    "answer": "Sí, diseñamos soluciones completamente adaptadas a las necesidades de cada cliente."
+  },
+  {
+    "id": "cff04c1d-e4fa-4cb3-8a76-99038bee56d9",
+    "service": "software",
+    "question": "¿Pueden integrar sistemas existentes?",
+    "answer": "Sí, realizamos integraciones entre sistemas mediante APIs y otras tecnologías de intercambio de información."
+  },
+  {
+    "id": "d9990dec-ed70-400f-bf30-a569467607f8",
+    "service": "software",
+    "question": "¿Desarrollan aplicaciones web?",
+    "answer": "Sí, desarrollamos aplicaciones web accesibles desde cualquier navegador y dispositivo."
+  },
+  {
+    "id": "bfacbcf9-770a-4b46-a1ad-233deec09cd6",
+    "service": "software",
+    "question": "¿Desarrollan aplicaciones móviles?",
+    "answer": "Sí, podemos desarrollar aplicaciones móviles para Android y iOS según los requerimientos del proyecto."
+  },
+  {
+    "id": "8e35c12b-0f8f-4cec-b91f-8708487d268d",
+    "service": "software",
+    "question": "¿Cuánto tarda un desarrollo?",
+    "answer": "El tiempo depende de la complejidad del proyecto. Algunos desarrollos pueden completarse en semanas y otros en varios meses."
+  },
+  {
+    "id": "dbe6cc0c-aee9-4b98-b04c-018da7c7e892",
+    "service": "software",
+    "question": "¿Qué tecnologías utilizan?",
+    "answer": "Trabajamos con tecnologías modernas como Python, FastAPI, React, PostgreSQL, Docker y servicios en la nube."
+  },
+  {
+    "id": "f33a874e-0f68-4d1b-9c75-27e100e0d4d6",
+    "service": "software",
+    "question": "¿Ofrecen soporte posterior al desarrollo?",
+    "answer": "Sí, contamos con planes de soporte y mantenimiento posteriores a la entrega del proyecto."
+  },
+  {
+    "id": "7de72893-5e0b-4df8-bbe3-a4ccac64ea91",
+    "service": "software",
+    "question": "¿Realizan automatización de procesos?",
+    "answer": "Sí, desarrollamos soluciones para automatizar tareas repetitivas y optimizar procesos empresariales."
+  },
+  {
+    "id": "77e98466-9348-45f3-a777-917256e66e7d",
+    "service": "software",
+    "question": "¿Pueden desarrollar un sistema para mi negocio?",
+    "answer": "Sí, analizamos tus necesidades y proponemos una solución personalizada para tu empresa."
+  },
+  {
+    "id": "c3594c3b-dd35-435a-8d1e-1f223a905d30",
+    "service": "camaras",
+    "question": "¿Qué tipos de cámaras manejan?",
+    "answer": "Trabajamos con cámaras IP, cámaras analógicas, sistemas DVR y NVR para distintos tipos de proyectos."
+  },
+  {
+    "id": "a027d345-6a9b-4cc2-8b56-e8a1420e2656",
+    "service": "camaras",
+    "question": "¿Qué diferencia hay entre una cámara IP y una analógica?",
+    "answer": "Las cámaras IP utilizan redes de datos para transmitir video y suelen ofrecer mayor flexibilidad y resolución."
+  },
+  {
+    "id": "4acd9057-aed5-4592-9f52-67700817fe0d",
+    "service": "camaras",
+    "question": "¿Las cámaras funcionan sin internet?",
+    "answer": "Sí, pueden grabar localmente sin internet. Sin embargo, el acceso remoto normalmente requiere conexión."
+  },
+  {
+    "id": "df212a70-c3c9-4d82-b5cc-b0cda4a59d46",
+    "service": "camaras",
+    "question": "¿Puedo ver mis cámaras desde el celular?",
+    "answer": "Sí, configuramos acceso remoto para que puedas visualizar las cámaras desde dispositivos móviles."
+  },
+  {
+    "id": "b8fd9ff9-9b64-4f96-87b1-372c8e0a3f6f",
+    "service": "camaras",
+    "question": "¿Instalan cámaras en casas?",
+    "answer": "Sí, realizamos instalaciones residenciales adaptadas a las necesidades de cada vivienda."
+  },
+  {
+    "id": "250366b1-f787-4765-a62e-24c07fc110a7",
+    "service": "camaras",
+    "question": "¿Instalan cámaras en negocios?",
+    "answer": "Sí, realizamos proyectos para comercios, oficinas, almacenes y empresas."
+  },
+  {
+    "id": "178c3a4d-af96-4e87-acf7-6618eea3521b",
+    "service": "camaras",
+    "question": "¿Ofrecen monitoreo?",
+    "answer": "Sí, contamos con opciones de monitoreo dependiendo de la ubicación y requerimientos del cliente."
+  },
+  {
+    "id": "319a44a3-9271-44b0-bd72-6e6e2bb19692",
+    "service": "camaras",
+    "question": "¿Las cámaras tienen visión nocturna?",
+    "answer": "Sí, la mayoría de los modelos incluyen visión nocturna para vigilancia durante la noche."
+  },
+  {
+    "id": "2257bd25-67c2-4989-aabe-704b39b0010b",
+    "service": "camaras",
+    "question": "¿Cuántos días se almacenan las grabaciones?",
+    "answer": "El tiempo de almacenamiento depende de la capacidad del sistema y la configuración seleccionada."
+  },
+  {
+    "id": "5918f85b-bea8-443e-b34c-eff180d65748",
+    "service": "camaras",
+    "question": "¿Ofrecen mantenimiento para sistemas de cámaras?",
+    "answer": "Sí, ofrecemos mantenimiento preventivo y correctivo para sistemas de videovigilancia."
+  },
+  {
+    "id": "7e3bcbf2-660e-4c1d-8df6-b053346d97f4",
+    "service": "licencias",
+    "question": "¿Venden licencias de software?",
+    "answer": "Sí, ofrecemos licencias originales para distintos productos de software."
+  },
+  {
+    "id": "5aac44b8-2702-40bd-963e-b671225d5e84",
+    "service": "licencias",
+    "question": "¿Las licencias son originales?",
+    "answer": "Sí, trabajamos únicamente con licencias legítimas y autorizadas."
+  },
+  {
+    "id": "87a9843f-86fa-4387-a3ce-e3276f85429d",
+    "service": "licencias",
+    "question": "¿Venden licencias de Windows?",
+    "answer": "Sí, ofrecemos diferentes versiones de licencias de Windows para usuarios y empresas."
+  },
+  {
+    "id": "5382fd7d-dbfb-4300-bbdc-5a35c57c761d",
+    "service": "licencias",
+    "question": "¿Venden Microsoft Office?",
+    "answer": "Sí, contamos con opciones de Microsoft Office y Microsoft 365."
+  },
+  {
+    "id": "c66e039f-e772-460b-81aa-3f9ecc706451",
+    "service": "licencias",
+    "question": "¿Qué diferencia hay entre Microsoft 365 y Office tradicional?",
+    "answer": "Microsoft 365 funciona mediante suscripción e incluye actualizaciones continuas, mientras que Office tradicional suele ser una compra única."
+  },
+  {
+    "id": "bfdb2c41-c6e0-4b15-88c3-6ca095e77755",
+    "service": "licencias",
+    "question": "¿Venden antivirus?",
+    "answer": "Sí, ofrecemos licencias de antivirus para usuarios domésticos y empresariales."
+  },
+  {
+    "id": "22cdf94d-cb28-49f4-acae-c320d409507f",
+    "service": "licencias",
+    "question": "¿Pueden instalar las licencias?",
+    "answer": "Sí, podemos ayudarte con la instalación y activación del software adquirido."
+  },
+  {
+    "id": "d45c9bd5-cb3b-49a8-acf1-7bc47bb611cc",
+    "service": "licencias",
+    "question": "¿Manejan licenciamiento empresarial?",
+    "answer": "Sí, ofrecemos soluciones de licenciamiento para organizaciones con múltiples equipos."
+  },
+  {
+    "id": "f455ace4-5a08-4c13-aa2d-ceb51f8aac86",
+    "service": "licencias",
+    "question": "¿Ofrecen asesoría para elegir licencias?",
+    "answer": "Sí, te ayudamos a seleccionar la opción más adecuada según tus necesidades."
+  },
+  {
+    "id": "462f5501-ef77-486c-909f-6372a936712a",
+    "service": "mantenimiento",
+    "question": "¿Qué incluye un mantenimiento de PC?",
+    "answer": "Incluye revisión general, limpieza, optimización y recomendaciones para mejorar el rendimiento."
+  },
+  {
+    "id": "7072a654-acc5-4981-8def-19ccfcc45e02",
+    "service": "mantenimiento",
+    "question": "¿Realizan limpieza física de computadoras?",
+    "answer": "Sí, realizamos limpieza interna y externa para mejorar el funcionamiento del equipo."
+  },
+  {
+    "id": "a7acd7fb-5fda-4105-9aa0-7e4b61052213",
+    "service": "mantenimiento",
+    "question": "¿Cambian pasta térmica?",
+    "answer": "Sí, podemos reemplazar la pasta térmica cuando sea necesario."
+  },
+  {
+    "id": "9ad81841-7cad-466f-9d9e-aeff21608482",
+    "service": "mantenimiento",
+    "question": "¿Mi computadora está lenta, pueden ayudarme?",
+    "answer": "Sí, realizamos diagnósticos para identificar y corregir problemas de rendimiento."
+  },
+  {
+    "id": "1bdf396c-7b5b-472e-8480-4589d7b5c356",
+    "service": "mantenimiento",
+    "question": "¿Instalan memoria RAM o discos SSD?",
+    "answer": "Sí, realizamos actualizaciones de hardware para mejorar el desempeño del equipo."
+  },
+  {
+    "id": "679072cf-6147-40cf-9353-dc30b2964d16",
+    "service": "mantenimiento",
+    "question": "¿Eliminan virus?",
+    "answer": "Sí, ofrecemos servicios de detección y eliminación de malware y virus."
+  },
+  {
+    "id": "62c16da2-f161-48cf-b08b-2a291d20971b",
+    "service": "mantenimiento",
+    "question": "¿Reinstalan Windows?",
+    "answer": "Sí, realizamos reinstalación y configuración de sistemas operativos."
+  },
+  {
+    "id": "0aa2c90b-15da-400b-9dbb-3b5f3966a76f",
+    "service": "mantenimiento",
+    "question": "¿Respaldan mi información antes de trabajar en el equipo?",
+    "answer": "Sí, recomendamos y realizamos respaldos cuando el cliente lo solicita."
+  },
+  {
+    "id": "65b6147d-011c-4c65-a91d-66fde204530b",
+    "service": "mantenimiento",
+    "question": "¿Atienden empresas?",
+    "answer": "Sí, ofrecemos mantenimiento para oficinas y organizaciones con múltiples equipos."
+  },
+  {
+    "id": "7f82ec43-e014-4a4b-aa4a-e6875dfacb59",
+    "service": "mantenimiento",
+    "question": "¿Pueden dar mantenimiento preventivo periódico?",
+    "answer": "Sí, contamos con planes de mantenimiento preventivo programado."
+  },
+  {
+    "id": "9fb54959-4dd9-49be-a104-324edf32563f",
+    "service": "general",
+    "question": "¿Cómo solicito una cotización?",
+    "answer": "Puedes proporcionarnos detalles de tu requerimiento y uno de nuestros asesores preparará una propuesta."
+  },
+  {
+    "id": "b7213f63-3090-4b81-b54b-101cf69d28a3",
+    "service": "general",
+    "question": "¿Cómo puedo hablar con un asesor?",
+    "answer": "Puedes solicitar atención personalizada y uno de nuestros asesores te dará seguimiento."
+  },
+  {
+    "id": "a1f39857-34b6-43d8-bdd8-281929bdf0aa",
+    "service": "general",
+    "question": "¿Qué formas de pago aceptan?",
+    "answer": "Aceptamos diversas formas de pago. La disponibilidad puede variar según el servicio."
+  },
+  {
+    "id": "c4558f54-3583-447b-94fb-b728c301cd2d",
+    "service": "general",
+    "question": "¿Puedo contratar varios servicios al mismo tiempo?",
+    "answer": "Sí, podemos integrar diferentes soluciones según las necesidades de tu proyecto."
+  },
+  {
+    "id": "f1bf20c1-9526-4123-a9f1-3e43149dce6d",
+    "service": "general",
+    "question": "¿Ofrecen garantía?",
+    "answer": "Sí, nuestros servicios y productos cuentan con garantía según las condiciones aplicables."
+  },
+  {
+    "id": "e2452e98-7e54-4c8e-9337-b1cc9991f881",
+    "service": "general",
+    "question": "¿Cómo puedo dar seguimiento a mi solicitud?",
+    "answer": "Una vez registrado tu requerimiento, nuestro equipo te mantendrá informado sobre el avance."
+  }
+]
