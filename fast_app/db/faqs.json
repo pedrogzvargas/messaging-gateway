@@ -6,6 +6,12 @@
     "answer": "Somos Vualdex, una empresa especializada en soluciones tecnológicas, desarrollo de software, videovigilancia, licenciamiento de software y mantenimiento de equipos de cómputo."
   },
   {
+    "id": "eeac80c8-2722-429a-b30b-c350b19d1bd4",
+    "service": "general",
+    "question": "¿Dónde se ubica Vualdex?",
+    "answer": "Vualdex se encuentra en Villa Lázaro Cárdenas, Puebla. Actualmente no contamos con una oficina física abierta al público ni con una sucursal para atención presencial. La atención a clientes se realiza de manera remota y, para los servicios que lo requieran, podemos coordinar visitas directamente con el cliente dentro de nuestra zona de cobertura."
+  },
+  {
     "id": "6ba95482-97d4-4813-90d2-8353f5e1851b",
     "service": "general",
     "question": "¿Qué servicios ofrecen?",
