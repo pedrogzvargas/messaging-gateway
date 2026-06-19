@@ -1,0 +1,3 @@
+api.gzvargas.com {
+    reverse_proxy app:80
+}

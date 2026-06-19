@@ -10,8 +10,6 @@ services:
       postgres:
         condition: service_healthy
     env_file: .env
-    ports:
-      - "8000:80"
     command: /start_app.sh
 
   worker:
@@ -47,3 +45,15 @@ services:
     volumes:
       - ${REDIS_DATA}:/data
     command: redis-server --appendonly yes
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./compose/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ${CADDY_DATA}:/data
+      - ${CADDY_CONFIG}:/config
