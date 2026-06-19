@@ -7,7 +7,7 @@ from modules.shared.environ.infrastructure import PyEnviron
 from modules.shared.persistence.infrastructure import AsyncAlchemySessionCreator
 
 async def load_faqs():
-    with open("faqs.json", "r", encoding="utf-8") as f:
+    with open("fast_app/db/faqs.json", "r", encoding="utf-8") as f:
         faqs = json.load(f)
 
     environ = PyEnviron()
