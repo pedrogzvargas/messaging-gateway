@@ -1,0 +1,17 @@
+[
+  {
+    "id": "dc7e945a-fcf0-4ca9-9dc9-f85ef899df51",
+    "name": "admin",
+    "is_active": true
+  },
+  {
+    "id": "3ec0d787-0fc5-4e6d-beb8-ae6cb889109d",
+    "name": "customer",
+    "is_active": true
+  },
+  {
+    "id": "919ef4fc-73c2-4a56-83fd-5ba711236e5d",
+    "name": "employee",
+    "is_active": true
+  }
+]

@@ -1,6 +1,7 @@
 from redis.asyncio import Redis
 from .config import get_settings
 from modules.shared.bus.event.infrastructure import RedisEventBus
+from modules.shared.bus.event.infrastructure import FakeEventBus
 
 class Container:
 
@@ -13,6 +14,7 @@ class Container:
             decode_responses=True
         )
 
-        self.event_bus = RedisEventBus(
-            redis_client=self.redis_client,
-        )
+        # self.event_bus = RedisEventBus(
+        #     redis_client=self.redis_client,
+        # )
+        self.event_bus = FakeEventBus()

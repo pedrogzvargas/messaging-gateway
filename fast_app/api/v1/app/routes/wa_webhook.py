@@ -1,3 +1,4 @@
+from uuid import uuid4
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter
 from fastapi import Request
@@ -8,7 +9,7 @@ from fastapi import Response
 from fastapi.responses import PlainTextResponse
 from fast_app.core.config import get_settings
 from fast_app.core.db_session import get_session
-from modules.whatsapp_webhook.infrastructure import WhatsappWebhookCreatorController
+from modules.app.webhook_event.infrastructure import WebhookEventCreatorController
 
 router = APIRouter()
 
@@ -24,16 +25,22 @@ async def verify_webhook(
 
     raise HTTPException(status_code=403)
 
-@router.post("/whatsapp/webhook")
-async def receive_webhook(request: Request, response: Response, session: AsyncSession = Depends(get_session)):
+@router.post("/whatsapp/webhook/{provider_id}")
+async def receive_webhook(request: Request, response: Response, provider_id: str, session: AsyncSession = Depends(get_session)):
     payload = await request.json()
 
     container = request.app.state.container
-    whatsapp_webhook_creator_controller = WhatsappWebhookCreatorController(
+    webhook_event_creator_controller = WebhookEventCreatorController(
         session=session,
         event_bus=container.event_bus,
     )
-    controller_response, code = await whatsapp_webhook_creator_controller.create(payload)
+    provider = payload.get("entry", [])[0].get("changes", [])[0].get("value", {}).get("messaging_product", "")
+    controller_response, code = await webhook_event_creator_controller.create(
+        id=uuid4(),
+        provider=provider,
+        provider_id=provider_id,
+        payload=payload,
+    )
     response.status_code = code
 
     return controller_response
