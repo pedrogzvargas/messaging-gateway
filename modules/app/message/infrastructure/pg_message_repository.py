@@ -63,11 +63,14 @@ class PgMessageRepository(MessageRepository):
             "results": results,
         }
 
-    def all(self):
+    async def all(self):
         """list all conversations"""
 
-        result = self.__session.query(MessageModel).all()
-        return result
+        result = await self.__session.execute(select(MessageModel))
+        results = result.scalars().all()
+
+        results = [MessageMapper.to_domain(result) for result in results]
+        return results
 
     async def get(self, id: UUID):
         """get conversation"""
@@ -78,18 +81,6 @@ class PgMessageRepository(MessageRepository):
             return MessageMapper.to_domain(customer)
 
         return None
-
-    async def get_by_phone(self, phone: str):
-        """get conversation"""
-
-        stmt = select(MessageModel).where(MessageModel.phone_number == phone)
-        query_result = await self.__session.execute(stmt)
-        conversation = query_result.scalar_one_or_none()
-
-        if conversation is None:
-            return None
-
-        return MessageMapper.to_domain(conversation)
 
     async def list_by_conversation(self, conversation_id: str, limit: int = 10):
         """get conversation"""
@@ -108,12 +99,3 @@ class PgMessageRepository(MessageRepository):
             return None
 
         return [MessageMapper.to_domain(message) for message in messages]
-
-    async def delete(self, id: UUID):
-        """delete conversation"""
-
-        customer = await self.__session.get(MessageModel, id)
-
-        if customer:
-            await self.__session.delete(customer)
-            await self.__session.flush()

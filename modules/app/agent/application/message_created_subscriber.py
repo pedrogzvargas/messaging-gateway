@@ -22,7 +22,7 @@ from modules.app.message_channel.infrastructure import WhatsappMessageChannel
 from modules.shared.persistence.infrastructure import AlchemyUnitOfWork
 
 
-@subscriber("app.whatsapp_message.created")
+@subscriber("app.message.created")
 class MessageCreatedSubscriber:
 
     def __init__(

@@ -1,8 +1,8 @@
 import importlib
 
 SUBSCRIBERS_MODULES = [
-    "modules.whatsapp_message.application.whatsapp_webhook_created_subscriber",
-    "modules.chat.application.message_created_subscriber",
+    "modules.app.message.application.webhook_event_created_subscriber",
+    "modules.app.agent.application.message_created_subscriber",
 ]
 
 def load_subscribers():

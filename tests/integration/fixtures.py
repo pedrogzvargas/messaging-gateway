@@ -5,21 +5,9 @@ import pytest_asyncio
 
 from sqlalchemy_models.mapper import metadata
 
-
 @pytest_asyncio.fixture(scope="function")
 async def db_session():
-    engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=True)
-
-    # metadata.create_all(engine)
-    #
-    # session_local = sessionmaker(bind=engine)
-    # session = session_local()
-    #
-    # try:
-    #     yield session
-    # finally:
-    #     session.close()
-    #     metadata.drop_all(engine)
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
 
     async with engine.begin() as conn:
         await conn.run_sync(metadata.create_all)

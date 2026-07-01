@@ -29,16 +29,6 @@ class MessageRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_phone(self, phone: str):
-        """get WhatsApp message by phone"""
-        pass
-
-    @abstractmethod
     async def list_by_conversation(self, conversation_id: UUID, limit: int = 10):
         """get WhatsApp message by conversation_id"""
-        pass
-
-    @abstractmethod
-    async def delete(self, id: UUID):
-        """delete WhatsApp message"""
         pass
