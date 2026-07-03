@@ -1,0 +1,6 @@
+class ConversationAlreadyExist(Exception):
+    ...
+
+
+class ConversationDoesNotExist(Exception):
+    ...

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "b6a34ed1-8997-4597-b152-7ec41e9ffbd2",
+    "name": "WhatsApp",
+    "is_active": true
+  },
+  {
+    "id": "1d1b7988-b8cf-46d0-aaff-2f7c4ee84e5f",
+    "name": "Facebook",
+    "is_active": true
+  }
+]

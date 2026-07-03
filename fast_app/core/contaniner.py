@@ -2,6 +2,7 @@ from redis.asyncio import Redis
 from .config import get_settings
 from modules.shared.bus.event.infrastructure import RedisEventBus
 
+
 class Container:
 
     def __init__(self):
