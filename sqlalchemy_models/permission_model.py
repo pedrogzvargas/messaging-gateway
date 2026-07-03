@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Optional
 from datetime import datetime
 from dataclasses import dataclass
 from sqlalchemy import Table
@@ -18,8 +19,8 @@ class PermissionModel:
     id: UUID
     name: str
     is_active: bool
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 permission_table = Table(
     "permission",

@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Optional
 from datetime import datetime
 from dataclasses import dataclass
 from sqlalchemy import Table
@@ -19,8 +20,8 @@ class RefreshTokenModel:
     user_id: UUID
     jti: str
     revoked: bool
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 refresh_token_table = Table(
     "refresh_token",

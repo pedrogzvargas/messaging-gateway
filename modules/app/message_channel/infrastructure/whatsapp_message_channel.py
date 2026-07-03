@@ -25,5 +25,5 @@ class WhatsappMessageChannel(MessageChannel):
                     }
                 }
             )
-            print(response.json())
+
             return response.json()

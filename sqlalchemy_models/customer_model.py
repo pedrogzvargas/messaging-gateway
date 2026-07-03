@@ -1,4 +1,5 @@
 from uuid import UUID
+from typing import Optional
 from datetime import datetime
 from sqlalchemy import Table
 from sqlalchemy import Column
@@ -18,8 +19,8 @@ class CustomerModel:
     name: str
     last_name: str
     second_last_name: str | None
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 customer_table = Table(

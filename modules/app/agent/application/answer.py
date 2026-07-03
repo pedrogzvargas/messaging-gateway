@@ -41,7 +41,7 @@ class Answer:
             *(
                 {
                     "role": message.role,
-                    "content": message.message_text
+                    "content": message.message
                 } for message in history[::-1]
             )
         ]

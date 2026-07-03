@@ -13,7 +13,7 @@ from modules.app.webhook_event.infrastructure import WebhookEventCreatorControll
 
 router = APIRouter()
 
-@router.get("/whatsapp/webhook")
+@router.get("/meta/webhook")
 async def verify_webhook(
     hub_mode: str = Query(alias="hub.mode"),
     hub_verify_token: str = Query(alias="hub.verify_token"),
@@ -25,7 +25,7 @@ async def verify_webhook(
 
     raise HTTPException(status_code=403)
 
-@router.post("/whatsapp/webhook/{provider_id}")
+@router.post("/meta/webhook/{provider_id}")
 async def receive_webhook(request: Request, response: Response, provider_id: str, session: AsyncSession = Depends(get_session)):
     payload = await request.json()
 

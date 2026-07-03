@@ -1,4 +1,4 @@
-from app.agent.domain import LLM
+from modules.app.llm.domain import LLM
 from langchain_openai import ChatOpenAI
 
 
