@@ -19,6 +19,7 @@ class ChannelAccountModel:
     channel_id: UUID
     business_id: UUID
     provider_id: str
+    display_name: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -29,6 +30,7 @@ channel_account_table = Table(
     Column("channel_id", postgresql.UUID(as_uuid=True), ForeignKey("channel.id", ondelete="RESTRICT"), nullable=False),
     Column("business_id", postgresql.UUID(as_uuid=True), ForeignKey("business.id", ondelete="RESTRICT"), nullable=False),
     Column("provider_id", String(100), nullable=False),
+    Column("display_name", String(255), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False, default=func.now(), server_default=func.now()),
     Column(
         "updated_at",

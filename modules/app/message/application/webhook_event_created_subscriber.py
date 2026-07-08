@@ -95,7 +95,7 @@ class WebhookEventCreatedSubscriber:
             contact = Contact.create(
                 id=uuid4(),
                 provider_id=phone_number,
-                channel_id=channel_account.channel_id,
+                channel_account_id=channel_account.id,
                 display_name=message_contact.get("profile", {}).get("name", ""),
             )
             await self.__contact_repository.add(contact)
