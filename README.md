@@ -103,6 +103,9 @@ docker-compose exec --user 0 api /bin/bash
 uvicorn app.main:app --reload
 ```
 
+## 🧪 Llaves para push
+vapid --gen
+
 ---
 
 ## 📌 Author
