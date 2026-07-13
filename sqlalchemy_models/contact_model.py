@@ -16,7 +16,7 @@ from .mapper import mapper_registry
 @dataclass
 class ContactModel:
     id: UUID
-    channel_id: UUID
+    channel_account_id: UUID
     provider_id: str
     display_name: str
     created_at: Optional[datetime] = None
@@ -26,7 +26,7 @@ contact_table = Table(
     "contact",
     metadata,
     Column("id", postgresql.UUID(as_uuid=True), primary_key=True),
-    Column("channel_id", postgresql.UUID(as_uuid=True), ForeignKey("channel.id", ondelete="RESTRICT"), nullable=False),
+    Column("channel_account_id", postgresql.UUID(as_uuid=True), ForeignKey("channel_account.id", ondelete="RESTRICT"), nullable=False),
     Column("provider_id", String(100), nullable=False),
     Column("display_name", String(200), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False, default=func.now(), server_default=func.now()),

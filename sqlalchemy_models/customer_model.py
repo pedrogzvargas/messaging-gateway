@@ -1,6 +1,7 @@
 from uuid import UUID
 from typing import Optional
 from datetime import datetime
+from dataclasses import dataclass
 from sqlalchemy import Table
 from sqlalchemy import Column
 from sqlalchemy import String
@@ -12,13 +13,14 @@ from .mapper import metadata
 from .mapper import mapper_registry
 
 
+@dataclass
 class CustomerModel:
 
     id: UUID
     user_id: UUID
     name: str
     last_name: str
-    second_last_name: str | None
+    second_last_name: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

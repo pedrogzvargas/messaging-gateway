@@ -196,7 +196,7 @@ async def test_contact_already_exist_on_webhook_event_created_subscriber() -> No
 
     contact_repository.get_by_provider_id.return_value = Contact(
         id=UUID("8849469f-a1fe-4bd2-b9eb-368998f5bb1f"),
-        channel_id=UUID("7f8a555f-b5be-42da-9c67-2f3157524bc7"),
+        channel_account_id=UUID("4805ed0a-7dc6-4129-a6f7-d47de8db6b35"),
         provider_id="1197984816725972",
         display_name="Pedro G",
     )
@@ -289,7 +289,7 @@ async def test_conversation_already_exist_on_webhook_event_created_subscriber() 
 
     contact_repository.get_by_provider_id.return_value = Contact(
         id=UUID("8849469f-a1fe-4bd2-b9eb-368998f5bb1f"),
-        channel_id=UUID("7f8a555f-b5be-42da-9c67-2f3157524bc7"),
+        channel_account_id=UUID("4805ed0a-7dc6-4129-a6f7-d47de8db6b35"),
         provider_id="1197984816725972",
         display_name="Pedro G",
     )

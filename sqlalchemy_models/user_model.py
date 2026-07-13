@@ -18,9 +18,9 @@ from .mapper import mapper_registry
 class UserModel:
     id: UUID
     email: str
-    username: str
     password: str
     is_active: bool
+    username: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

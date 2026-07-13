@@ -29,7 +29,7 @@ async def test_message_created_subscriber() -> None:
 
     contact_repository.get.return_value = Contact(
         id=UUID("901e00a4-d44f-4028-8f9c-1dba964a0460"),
-        channel_id=UUID("b36f19f8-4da4-40d4-a1d1-b8a5c5a92fc0"),
+        channel_account_id=UUID("b36f19f8-4da4-40d4-a1d1-b8a5c5a92fc0"),
         provider_id="5217461084362",
         display_name="Pedro G"
     )
@@ -97,7 +97,7 @@ async def test_conversation_does_not_exist_on_message_created_subscriber() -> No
 
     contact_repository.get.return_value = Contact(
         id=UUID("901e00a4-d44f-4028-8f9c-1dba964a0460"),
-        channel_id=UUID("b36f19f8-4da4-40d4-a1d1-b8a5c5a92fc0"),
+        channel_account_id=UUID("b36f19f8-4da4-40d4-a1d1-b8a5c5a92fc0"),
         provider_id="5217461084362",
         display_name="Pedro G"
     )
