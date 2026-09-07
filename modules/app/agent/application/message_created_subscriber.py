@@ -11,6 +11,7 @@ from modules.app.message.domain import Message
 from modules.app.message.domain import MessageRepository
 from modules.app.conversation.domain import ConversationRepository
 from modules.app.contact.domain import ContactRepository
+from modules.app.business_prompt.domain import BusinessPromptRepository
 from modules.app.conversation.domain.exceptions import ConversationDoesNotExist
 from modules.app.contact.domain.exceptions import ContactDoesNotExist
 from modules.shared.bus.event.application import subscriber
@@ -24,6 +25,7 @@ from modules.app.message.infrastructure import PgMessageRepository
 from modules.app.conversation.infrastructure import PgConversationRepository
 from modules.app.contact.infrastructure import PgContactRepository
 from modules.app.faq.infrastructure import PgFaqRepository
+from modules.app.business_prompt.infrastructure import PgBusinessPromptRepository
 from modules.app.message_channel.infrastructure import WhatsappMessageChannel
 from modules.app.message_channel.infrastructure import FakeMessageChannel # TODO Delete
 from modules.shared.persistence.infrastructure import AlchemyUnitOfWork
@@ -42,6 +44,7 @@ class MessageCreatedSubscriber:
         contact_repository: ContactRepository | None = None,
         message_repository: MessageRepository | None = None,
         faq_repository: FaqRepository | None = None,
+        business_prompt_repository: BusinessPromptRepository | None = None,
         message_channel: MessageChannel | None = None,
     ):
         self.__environ = environ or PyEnviron()
@@ -72,6 +75,7 @@ class MessageCreatedSubscriber:
                 api_key=self.__environ.get_str("OPENAI_API_KEY"),
             )
         )
+        self.__business_prompt_repository = business_prompt_repository or PgBusinessPromptRepository(session=self.__session)
         # self.__message_channel = message_channel or WhatsappMessageChannel(environ=self.__environ) TODO Uncomment
         self.__message_channel = message_channel or FakeMessageChannel() # TODO Delete
 
@@ -88,9 +92,13 @@ class MessageCreatedSubscriber:
         if not contact:
             raise ContactDoesNotExist(f"Contact with id: {conversation.contact_id} does not exist")
 
+        business_id = await self.__conversation_repository.get_business_id_by_conversation_id(conversation_id=conversation.id)
+        # TODO RAISE EXCEPTION
+
         graph = BusinessGraph(
             message_repository=self.__message_repository,
             faq_repository=self.__faq_repository,
+            business_prompt_repository=self.__business_prompt_repository,
             llm=self.__llm,
         ).build_graph()
 
@@ -98,6 +106,7 @@ class MessageCreatedSubscriber:
         initial_state.message = f"{message}"
         initial_state.phone_number = contact.provider_id
         initial_state.conversation_id = conversation_id
+        initial_state.business_id = str(business_id)
         result = await graph.ainvoke(initial_state)
 
         sent_message_response = await self.__message_channel.send_message(

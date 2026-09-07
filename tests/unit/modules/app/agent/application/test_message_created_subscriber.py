@@ -18,6 +18,7 @@ async def test_message_created_subscriber() -> None:
     contact_repository = AsyncMock()
     message_repository = AsyncMock()
     faq_repository = AsyncMock()
+    business_prompt_repository = AsyncMock()
     message_channel = AsyncMock()
     environ = Mock()
 
@@ -58,6 +59,7 @@ async def test_message_created_subscriber() -> None:
         contact_repository=contact_repository,
         message_repository=message_repository,
         faq_repository=faq_repository,
+        business_prompt_repository=business_prompt_repository,
         message_channel=message_channel,
     )
 
@@ -90,6 +92,7 @@ async def test_conversation_does_not_exist_on_message_created_subscriber() -> No
     contact_repository = AsyncMock()
     message_repository = AsyncMock()
     faq_repository = AsyncMock()
+    business_prompt_repository = AsyncMock()
     message_channel = AsyncMock()
     environ = Mock()
 
@@ -111,6 +114,7 @@ async def test_conversation_does_not_exist_on_message_created_subscriber() -> No
         contact_repository=contact_repository,
         message_repository=message_repository,
         faq_repository=faq_repository,
+        business_prompt_repository=business_prompt_repository,
         message_channel=message_channel,
     )
 
@@ -141,6 +145,7 @@ async def test_contact_does_not_exist_on_message_created_subscriber() -> None:
     contact_repository = AsyncMock()
     message_repository = AsyncMock()
     faq_repository = AsyncMock()
+    business_prompt_repository = AsyncMock()
     message_channel = AsyncMock()
     environ = Mock()
 
@@ -161,6 +166,7 @@ async def test_contact_does_not_exist_on_message_created_subscriber() -> None:
         contact_repository=contact_repository,
         message_repository=message_repository,
         faq_repository=faq_repository,
+        business_prompt_repository=business_prompt_repository,
         message_channel=message_channel,
     )
 

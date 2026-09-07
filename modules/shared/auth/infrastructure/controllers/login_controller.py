@@ -6,13 +6,14 @@ from modules.shared.auth.domain import TokenHandler
 from modules.shared.auth.domain import AuthAttemptHandler
 from modules.shared.auth.domain import UserDoesNotExist
 from modules.shared.auth.domain import WrongCredentials
-from modules.shared.auth.domain import LockedAccount
+from modules.shared.auth.domain import TemporarilyLocketAccount
 from modules.shared.persistence.domain import UnitOfWork
 from modules.shared.auth.domain.repositories import RefreshTokenRepository
 from modules.shared.auth.domain.repositories import UserRoleRepository
 from modules.shared.auth.domain.repositories import RoleRepository
 from modules.shared.auth.domain.repositories import RolePermissionRepository
 from modules.shared.auth.domain.repositories import PermissionRepository
+from modules.shared.auth.domain.repositories import SessionRepository
 from modules.shared.http.domain import status
 from modules.shared.http.domain import messages
 from modules.shared.environ.domain import Environ
@@ -24,6 +25,7 @@ from modules.shared.auth.infrastructure.repositories import PostgresUserRoleRepo
 from modules.shared.auth.infrastructure.repositories import PostgresRoleRepository
 from modules.shared.auth.infrastructure.repositories import PostgresRolePermissionRepository
 from modules.shared.auth.infrastructure.repositories import PostgresPermissionRepository
+from modules.shared.auth.infrastructure.repositories import PostgresSessionRepository
 from modules.shared.auth.infrastructure import LoginSchema
 from modules.shared.environ.infrastructure import PyEnviron
 from modules.shared.serializer.infrastructure.marshmallow import MarshmallowEntitySerializer
@@ -31,6 +33,7 @@ from modules.shared.password_hasher.infrastructure import Argon2PasswordHasher
 from modules.shared.persistence.infrastructure import AlchemyUnitOfWork
 from modules.shared.auth.infrastructure import JwtTokenHandler
 from modules.shared.auth.infrastructure import RedisAuthAttemptHandler
+from fastapi.responses import JSONResponse
 
 
 class LoginController:
@@ -48,11 +51,14 @@ class LoginController:
         role_permission_repository: RolePermissionRepository | None = None,
         permission_repository: PermissionRepository | None = None,
         refresh_token_repository: RefreshTokenRepository | None = None,
+        session_repository: SessionRepository | None = None,
         password_hasher: PasswordHasher | None = None,
         token_handler: TokenHandler | None = None,
         auth_attempt_handler: AuthAttemptHandler | None = None,
         entity_serializer: EntitySerializer | None = None,
-        environ: Environ | None = None
+        environ: Environ | None = None,
+        access_token_exp: int | None = None,
+        refresh_token_exp: int | None = None,
     ):
         """
         Args:
@@ -72,6 +78,7 @@ class LoginController:
         self.__role_permission_repository = role_permission_repository or PostgresRolePermissionRepository(session=self.__session)
         self.__permission_repository = permission_repository or PostgresPermissionRepository(session=self.__session)
         self.__refresh_token_repository = refresh_token_repository or PostgresRefreshTokenRepository(session=self.__session)
+        self.__session_repository = session_repository or PostgresSessionRepository(session=self.__session)
         self.__password_hasher = password_hasher or Argon2PasswordHasher()
         self.__token_handler = token_handler or JwtTokenHandler(self.__environ.get_str("SECRET_KEY"))
         self.__auth_attempt_handler = auth_attempt_handler or RedisAuthAttemptHandler(
@@ -82,6 +89,8 @@ class LoginController:
             ), environ=self.__environ
         )
         self.__entity_serializer = entity_serializer or MarshmallowEntitySerializer(schema=LoginSchema())
+        self.__access_token_exp = access_token_exp or self.__environ.get_int("ACCESS_TOKEN_MINUTES", 5)
+        self.__refresh_token_exp = refresh_token_exp or self.__environ.get_int("REFRESH_TOKEN_MINUTES", 60)
 
     async def login(self, body: dict):
         try:
@@ -93,41 +102,51 @@ class LoginController:
                 permission_repository=self.__permission_repository,
                 role_permission_repository=self.__role_permission_repository,
                 refresh_token_repository=self.__refresh_token_repository,
+                session_repository=self.__session_repository,
                 password_hasher=self.__password_hasher,
                 token_handler=self.__token_handler,
                 auth_attempt_handler=self.__auth_attempt_handler,
+                access_token_exp=self.__access_token_exp,
+                refresh_token_exp=self.__refresh_token_exp,
             )
             access_token, refresh_token = await login.login(email=body.get("email"), password=body.get("password"))
             login_response = self.__entity_serializer(dict(access_token=access_token, refresh_token=refresh_token))
-            response = {
-                "success": True,
-                "message": messages.SUCCESS_MESSAGE,
-                "data": login_response
-            }, status.HTTP_200_OK
+            response = JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content = {
+                    "success": True,
+                    "message": f"{messages.SUCCESS_MESSAGE}",
+                    "data": login_response,
+                }
+            )
 
-        except (UserDoesNotExist, WrongCredentials) as ex:
-            response = {
-                "success": False,
-                "message": f"{messages.WRONG_CREDENTIALS}",
-                "data": {}
-            }, status.HTTP_400_BAD_REQUEST
-            return response
+        except (UserDoesNotExist, WrongCredentials):
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content = {
+                    "success": False,
+                    "message": f"{messages.WRONG_CREDENTIALS}",
+                }
+            )
 
-        except LockedAccount as ex:
+        except TemporarilyLocketAccount as ex:
             response = {
                 "success": False,
                 "message": f"{messages.TOO_MANY_LOGIN_ATTEMPTS}",
-                "data": {}
+                "data": {
+                    "retry_after": ex.retry_after
+                }
             }, status.HTTP_429_TOO_MANY_REQUESTS
             return response
 
-        except Exception as ex:
-            response = {
-                "success": False,
-                "message": messages.INTERNAL_SERVER_ERROR,
-                "data": {}
-            }, status.HTTP_500_INTERNAL_SERVER_ERROR
-            return response
+        except Exception:
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={
+                    "success": False,
+                    "message": f"{messages.INTERNAL_SERVER_ERROR}",
+                }
+            )
 
         else:
             return response

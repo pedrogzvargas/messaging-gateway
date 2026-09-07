@@ -5,6 +5,7 @@ from .postgres_permission_repository import PostgresPermissionRepository
 from .postgres_role_permission_repository import PostgresRolePermissionRepository
 from .postgres_refresh_token_repository import PostgresRefreshTokenRepository
 from .redis_password_reset_token_repository import RedisPasswordResetTokenRepository
+from .postgres_session_repository import PostgresSessionRepository
 
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     "PostgresRolePermissionRepository",
     "PostgresRefreshTokenRepository",
     "RedisPasswordResetTokenRepository",
+    "PostgresSessionRepository",
 ]

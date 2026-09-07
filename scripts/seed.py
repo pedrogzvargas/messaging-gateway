@@ -5,6 +5,7 @@ from sqlalchemy_models import RoleModel
 from sqlalchemy_models import PermissionModel
 from sqlalchemy_models import RolePermissionModel
 from sqlalchemy_models import ChannelModel
+from sqlalchemy_models import PlanModel
 from modules.shared.environ.infrastructure import PyEnviron
 from modules.shared.persistence.infrastructure import AsyncAlchemySessionCreator
 from sqlalchemy.dialects.postgresql import insert
@@ -17,6 +18,7 @@ MODEL_MAP = {
     "permission": PermissionModel,
     "role_permission": RolePermissionModel,
     "channel": ChannelModel,
+    "plan": PlanModel,
 }
 
 async def load_fixture(session: AsyncSession, file_path: Path) -> None:

@@ -6,6 +6,7 @@ from typing import Annotated
 from fast_app.core.db_session import get_session
 from fast_app.api.v1.app.schemas import ChannelAccountQueryParams
 from modules.app.channel_account.infrastructure import ChannelAccountSearcherController
+from fast_app.core.auth import require_permission
 
 router = APIRouter()
 
@@ -14,11 +15,14 @@ async def list_channel_accounts(
     response: Response,
     query_params: Annotated[ChannelAccountQueryParams, Depends()],
     db_session = Depends(get_session),
-    # dependencies = (Depends(require_permission("customer:list"))),
+    current_user = Depends(require_permission("channels:view:owner")),
 ):
     query_params = query_params.model_dump(exclude_none=True)
     channel_account_searcher_controller = ChannelAccountSearcherController(session=db_session)
-    controller_response, code = await channel_account_searcher_controller.search(query_params=query_params)
+    controller_response, code = await channel_account_searcher_controller.search(
+        query_params=query_params,
+        user_id=UUID(current_user["sub"]),
+    )
     response.status_code = code
     return controller_response
 

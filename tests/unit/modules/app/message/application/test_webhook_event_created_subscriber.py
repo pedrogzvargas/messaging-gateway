@@ -104,6 +104,7 @@ async def test_first_message_on_webhook_event_created_subscriber() -> None:
         channel_id=UUID("7f8a555f-b5be-42da-9c67-2f3157524bc7"),
         business_id=UUID("433b6dad-77dd-462b-9c00-f6c8ddd53c59"),
         provider_id="1197984816725972",
+        display_name="Vualdex",
     )
 
     contact_repository.get_by_provider_id.return_value = None
@@ -192,6 +193,7 @@ async def test_contact_already_exist_on_webhook_event_created_subscriber() -> No
         channel_id=UUID("7f8a555f-b5be-42da-9c67-2f3157524bc7"),
         business_id=UUID("433b6dad-77dd-462b-9c00-f6c8ddd53c59"),
         provider_id="1197984816725972",
+        display_name="Vualdex",
     )
 
     contact_repository.get_by_provider_id.return_value = Contact(
@@ -284,6 +286,7 @@ async def test_conversation_already_exist_on_webhook_event_created_subscriber() 
         id=UUID("4805ed0a-7dc6-4129-a6f7-d47de8db6b35"),
         channel_id=UUID("7f8a555f-b5be-42da-9c67-2f3157524bc7"),
         business_id=UUID("433b6dad-77dd-462b-9c00-f6c8ddd53c59"),
+        display_name="Vualdex",
         provider_id="1197984816725972",
     )
 

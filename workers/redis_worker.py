@@ -4,6 +4,7 @@ from redis.asyncio import Redis
 from modules.shared.bus.event.application import Dispatcher
 from modules.shared.bus.event.application import load_subscribers
 from modules.shared.environ.infrastructure import PyEnviron
+from modules.shared.logger.infrastructure import PyLogger
 
 load_subscribers()
 
@@ -13,30 +14,49 @@ redis = Redis(
     port=environ.get_int("REDIS_PORT", 6379),
     decode_responses=True
 )
+logger = PyLogger(
+    level=environ.get_str("LOG_LEVEL"),
+    format=environ.get_str("LOG_FORMAT"),
+)
 
 async def worker():
-    last_id = "$"
+    consumer_name = "worker-1"
+    group_name = environ.get_str("MESSAGE_GROUP_NAME")
+    stream_name = environ.get_str("MESSAGE_QUEUE_NAME")
 
     while True:
-        messages = await redis.xread(
-            {"events": last_id},
-            block=5000,
-            count=10
-        )
+        try:
+            messages = await redis.xreadgroup(
+                groupname=group_name,
+                consumername=consumer_name,
+                streams={stream_name: ">"},
+                count=1,
+                block=5000
+            )
+        except Exception as ex:
+            logger.error(f"redis_worker: failed to read from stream: {ex}")
+            continue
 
         if not messages:
             continue
 
         for stream_name, entries in messages:
             for message_id, data in entries:
-                event = json.loads(data["event"])
+                try:
+                    event = json.loads(data["event"])
 
-                print(event["event_name"])
+                    logger.info(event["event_name"])
 
-                # procesar
-                await Dispatcher.dispatch(event=event)
+                    # procesar
+                    await Dispatcher.dispatch(event=event)
+                    await redis.xack(
+                        stream_name,
+                        group_name,
+                        message_id
+                    )
 
-                last_id = message_id
+                except Exception as ex:
+                    logger.error(f"redis_worker: failed to process message {message_id}: {ex}")
 
 def main():
     asyncio.run(worker())

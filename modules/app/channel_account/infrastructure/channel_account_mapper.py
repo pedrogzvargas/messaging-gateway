@@ -11,6 +11,9 @@ class ChannelAccountMapper:
             channel_id=entity.channel_id,
             business_id=entity.business_id,
             provider_id=entity.provider_id,
+            display_name=entity.display_name,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod
@@ -20,6 +23,7 @@ class ChannelAccountMapper:
             channel_id=model.channel_id,
             business_id=model.business_id,
             provider_id=model.provider_id,
+            display_name=model.display_name,
             created_at=model.created_at,
             updated_at=model.updated_at,
         )

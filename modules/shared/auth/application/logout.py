@@ -1,6 +1,6 @@
-from modules.shared.auth.domain import TokenHandler
-from modules.shared.auth.domain.exceptions import InvalidTokenError
+from uuid import UUID
 from modules.shared.auth.domain.repositories import RefreshTokenRepository
+from modules.shared.auth.domain.repositories import SessionRepository
 from modules.shared.persistence.domain import UnitOfWork
 
 
@@ -10,22 +10,19 @@ class Logout:
         self,
         unit_of_work: UnitOfWork,
         refresh_token_repository: RefreshTokenRepository,
-        token_handler: TokenHandler,
+        session_repository: SessionRepository,
     ):
         self.__refresh_token_repository = refresh_token_repository
-        self.__token_handler = token_handler
+        self.__session_repository = session_repository
         self.__unit_of_work = unit_of_work
 
-    async def logout(self, token):
-        refresh_token_payload = self.__token_handler.decode(token)
-        jti = refresh_token_payload.get("jti")
-        token_type = refresh_token_payload.get("type")
-
-        if token_type != "refresh":
-            raise InvalidTokenError("Invalid token")
-
+    async def logout(self, jti: UUID):
         refresh_token = await self.__refresh_token_repository.get(id=jti)
         refresh_token.patch({"revoked": True})
 
+        session = await self.__session_repository.get(id=refresh_token.session_id)
+        session.patch({"revoked": True})
+
         async with self.__unit_of_work:
             await self.__refresh_token_repository.patch(refresh_token=refresh_token)
+            await self.__session_repository.patch(session=session)

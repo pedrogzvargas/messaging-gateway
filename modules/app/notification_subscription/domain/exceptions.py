@@ -1,0 +1,6 @@
+class NotificationSubscriptionAlreadyExist(Exception):
+    ...
+
+
+class NotificationSubscriptionDoesNotExist(Exception):
+    ...

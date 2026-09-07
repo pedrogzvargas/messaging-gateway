@@ -9,4 +9,4 @@ echo "==========================================================================
 
 alembic upgrade head
 
-uvicorn fast_app.main:app --host 0.0.0.0 --port 80
+exec uvicorn fast_app.main:app --host 0.0.0.0 --port 80

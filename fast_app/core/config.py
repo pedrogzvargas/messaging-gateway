@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     # REDIS
     redis_host: str
     redis_port: int
+    message_queue_name: str
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",

@@ -1,0 +1,6 @@
+class FaqAlreadyExist(Exception):
+    ...
+
+
+class FaqDoesNotExist(Exception):
+    ...

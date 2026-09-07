@@ -12,6 +12,8 @@ class UserMapper:
             username=entity.username,
             password=entity.password,
             is_active=entity.is_active,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod

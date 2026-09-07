@@ -2,6 +2,7 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import String
 from sqlalchemy import desc
+from sqlalchemy import asc
 from sqlalchemy import func
 from sqlalchemy import select
 from modules.app.message.domain import MessageRepository
@@ -90,7 +91,7 @@ class PgMessageRepository(MessageRepository):
         ).where(
             MessageModel.conversation_id == conversation_id
         ).order_by(
-            desc(MessageModel.timestamp)
+            asc(MessageModel.timestamp)
         ).limit(limit))
         query_result = await self.__session.execute(stmt)
         messages = query_result.scalars().all()

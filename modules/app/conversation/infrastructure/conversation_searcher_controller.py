@@ -1,3 +1,4 @@
+from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from modules.app.conversation.domain import ConversationRepository
 from modules.app.conversation.application import ConversationSearcher
@@ -41,10 +42,10 @@ class ConversationSearcherController:
             format=self.__environ.get_str("LOG_FORMAT"),
         )
 
-    async def search(self, query_params: dict):
+    async def search(self, query_params: dict, user_id: UUID):
         try:
             conversation_searcher = ConversationSearcher(conversation_repository=self.__conversation_repository)
-            customers_response = await conversation_searcher.search(query_params=query_params)
+            customers_response = await conversation_searcher.search(query_params=query_params, user_id=user_id)
             customers = PageResponse[ConversationResponse](
                 page=customers_response.page,
                 limit=customers_response.limit,

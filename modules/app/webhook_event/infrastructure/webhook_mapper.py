@@ -11,6 +11,8 @@ class WebhookMapper:
             provider=entity.provider,
             provider_id=entity.provider_id,
             payload=entity.payload,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod

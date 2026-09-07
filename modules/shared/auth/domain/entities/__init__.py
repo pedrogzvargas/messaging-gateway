@@ -4,6 +4,7 @@ from .permission import Permission
 from .role import Role
 from .role_permission import RolePermission
 from .user_role import UserRole
+from .session import Session
 
 
 __all__ = [
@@ -13,4 +14,5 @@ __all__ = [
     "Role",
     "RolePermission",
     "UserRole",
+    "Session",
 ]

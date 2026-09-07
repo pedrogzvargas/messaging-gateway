@@ -1,0 +1,6 @@
+class BusinessDoesNotExist(Exception):
+    ...
+
+
+class BusinessPromptDoesNotExist(Exception):
+    ...

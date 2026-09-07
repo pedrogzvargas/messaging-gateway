@@ -10,6 +10,8 @@ class ConversationMapper:
             id=entity.id,
             channel_account_id=entity.channel_account_id,
             contact_id=entity.contact_id,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod

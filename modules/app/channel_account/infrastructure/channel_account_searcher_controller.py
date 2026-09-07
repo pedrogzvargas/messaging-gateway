@@ -1,3 +1,4 @@
+from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from modules.app.channel_account.domain import ChannelAccountRepository
 from modules.app.channel_account.application import ChannelAccountSearcher
@@ -40,10 +41,10 @@ class ChannelAccountSearcherController:
             format=self.__environ.get_str("LOG_FORMAT"),
         )
 
-    async def search(self, query_params: dict):
+    async def search(self, query_params: dict, user_id: UUID):
         try:
             channel_account_searcher = ChannelAccountSearcher(channel_account_repository=self.__channel_account_repository)
-            channels_response = await channel_account_searcher.search(query_params=query_params)
+            channels_response = await channel_account_searcher.search(query_params=query_params, user_id=user_id)
             customers = PageResponse[ChannelAccountResponse](
                 page=channels_response.page,
                 limit=channels_response.limit,

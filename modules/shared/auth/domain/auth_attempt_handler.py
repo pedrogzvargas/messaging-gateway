@@ -1,3 +1,4 @@
+from datetime import timedelta
 from abc import ABC
 from abc import abstractmethod
 
@@ -15,6 +16,11 @@ class AuthAttemptHandler(ABC):
     @abstractmethod
     async def is_blocked(self, email: str) -> bool:
         """function to check if email is blocked"""
+        pass
+
+    @abstractmethod
+    async def get_remaining_time(self, email: str) -> timedelta | None:
+        """function to get remaining time"""
         pass
 
     @abstractmethod

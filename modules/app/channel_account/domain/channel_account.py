@@ -10,6 +10,7 @@ class ChannelAccount:
         channel_id: UUID,
         business_id: UUID,
         provider_id: str,
+        display_name: str,
         created_at: datetime | None = None,
         updated_at: datetime | None = None
     ):
@@ -17,6 +18,7 @@ class ChannelAccount:
         self.channel_id = channel_id
         self.business_id = business_id
         self.provider_id = provider_id
+        self.display_name = display_name
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -26,6 +28,7 @@ class ChannelAccount:
         channel_id: UUID,
         business_id: UUID,
         provider_id: str,
+        display_name: str,
         created_at: datetime | None = None,
         updated_at: datetime | None = None,
     ):
@@ -34,6 +37,7 @@ class ChannelAccount:
             channel_id=channel_id,
             business_id=business_id,
             provider_id=provider_id,
+            display_name=display_name,
             created_at=created_at,
             updated_at=updated_at,
         )

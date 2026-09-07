@@ -3,6 +3,7 @@ from .logout import Logout
 from .token_refresher import TokenRefresher
 from .password_recovery import PasswordRecovery
 from .password_reset import PasswordReset
+from .password_change import PasswordChange
 
 
 __all__ = [
@@ -11,4 +12,5 @@ __all__ = [
     "TokenRefresher",
     "PasswordRecovery",
     "PasswordReset",
+    "PasswordChange",
 ]

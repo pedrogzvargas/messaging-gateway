@@ -9,5 +9,6 @@ class ChannelAccountItem:
     channel: str
     business: str
     provider_id: str
+    display_name: str
     created_at: datetime
     updated_at: datetime

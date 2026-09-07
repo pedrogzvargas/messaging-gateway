@@ -1,6 +1,6 @@
 from redis.asyncio import Redis
 from .config import get_settings
-from modules.shared.bus.event.infrastructure import RedisEventBus
+from modules.shared.bus.event.infrastructure.redis import RedisEventBus
 
 
 class Container:
@@ -16,4 +16,5 @@ class Container:
 
         self.event_bus = RedisEventBus(
             redis_client=self.redis_client,
+            stream_name=settings.message_queue_name,
         )

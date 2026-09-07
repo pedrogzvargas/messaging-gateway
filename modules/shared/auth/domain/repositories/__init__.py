@@ -5,6 +5,7 @@ from .permission_repository import PermissionRepository
 from .role_permission_repository import RolePermissionRepository
 from .refresh_token_repository import RefreshTokenRepository
 from .password_reset_token_repository import PasswordResetTokenRepository
+from .session_repository import SessionRepository
 
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     "RolePermissionRepository",
     "RefreshTokenRepository",
     "PasswordResetTokenRepository",
+    "SessionRepository",
 ]

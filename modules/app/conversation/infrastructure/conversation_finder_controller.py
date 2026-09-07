@@ -27,10 +27,10 @@ class ConversationFinderController:
         self.__session = session
         self.__conversation_repository = conversation_repository or PgConversationRepository(session=self.__session)
 
-    async def find(self, conversation_id: UUID):
+    async def find(self, conversation_id: UUID, user_id: UUID):
         try:
             conversation_finder = ConversationFinder(conversation_repository=self.__conversation_repository)
-            conversation = await conversation_finder.find(conversation_id=conversation_id)
+            conversation = await conversation_finder.find(conversation_id=conversation_id, user_id=user_id)
             conversation = ConversationResponse.model_validate(conversation)
             response = {
                 "success": True,
