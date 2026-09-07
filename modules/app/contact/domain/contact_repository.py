@@ -28,3 +28,8 @@ class ContactRepository(ABC):
     async def simple_search(self, filters: dict, limit: int = 10, page: int = 1) -> PageResult:
         """simple conversation search"""
         pass
+
+    @abstractmethod
+    async def get_business_id_by_user_id(self, user_id: UUID):
+        """get the business id owned by the given user"""
+        pass

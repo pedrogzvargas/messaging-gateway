@@ -1,4 +1,4 @@
-from app.agent.application import Feedback
+from modules.app.agent.application import Feedback
 
 
 class FeedbackNode:

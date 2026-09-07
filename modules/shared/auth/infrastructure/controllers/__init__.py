@@ -3,6 +3,7 @@ from .logout_controller import LogoutController
 from .refresh_token_controller import RefreshTokenController
 from .password_recovery_controller import PasswordRecoveryController
 from .password_reset_controller import PasswordResetController
+from .password_change_controller import PasswordChangeController
 
 
 __all__ = [
@@ -11,4 +12,5 @@ __all__ = [
     "RefreshTokenController",
     "PasswordRecoveryController",
     "PasswordResetController",
+    "PasswordChangeController",
 ]

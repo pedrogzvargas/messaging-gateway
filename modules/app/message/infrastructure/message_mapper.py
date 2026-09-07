@@ -16,6 +16,8 @@ class MessageMapper:
             direction=entity.direction,
             timestamp=entity.timestamp,
             payload=entity.payload,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod

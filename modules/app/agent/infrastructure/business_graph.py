@@ -5,6 +5,7 @@ from .state import ChatState
 from .nodes import DetectIntentNode, FeedbackNode, AnswerNode, OtherNode
 from .nodes import GreetNode
 from .nodes import FAQNode
+from modules.app.agent.application import Greet
 from modules.app.agent.application import FAQ
 from modules.app.agent.application import DetectIntent
 from modules.app.agent.application import Feedback
@@ -12,6 +13,7 @@ from modules.app.agent.application import Answer
 from modules.app.agent.application import Other
 from modules.app.llm.domain import LLM
 from modules.app.faq.domain import FaqRepository
+from modules.app.business_prompt.domain import BusinessPromptRepository
 from modules.app.message.domain import MessageRepository
 
 
@@ -23,26 +25,30 @@ class BusinessGraph:
         self,
         message_repository: MessageRepository,
         faq_repository: FaqRepository,
+        business_prompt_repository: BusinessPromptRepository,
         llm: LLM,
     ):
         self.__message_repository = message_repository
         self.__faq_repository = faq_repository
+        self.__business_prompt_repository = business_prompt_repository
         self.__llm = llm
 
     def build_graph(self):
         # services
         detect_intent = DetectIntent(llm=self.__llm)
+        greet = Greet(business_prompt_repository=self.__business_prompt_repository)
         faq = FAQ(
             llm=self.__llm,
             faq_repository=self.__faq_repository,
             message_repository=self.__message_repository,
+            business_prompt_repository=self.__business_prompt_repository,
         )
         feedback = Feedback(llm=self.__llm, message_repository=self.__message_repository)
         answer = Answer(llm=self.__llm, message_repository=self.__message_repository)
         other = Other(llm=self.__llm, message_repository=self.__message_repository)
         # nodes
         detect_intent_node = DetectIntentNode(service=detect_intent)
-        greet_node = GreetNode()
+        greet_node = GreetNode(service=greet)
         faq_node = FAQNode(service=faq)
         feedback_node = FeedbackNode(service=feedback)
         answer_node = AnswerNode(service=answer)

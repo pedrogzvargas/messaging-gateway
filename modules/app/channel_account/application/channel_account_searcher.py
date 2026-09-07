@@ -1,3 +1,4 @@
+from uuid import UUID
 from modules.app.channel_account.domain import ChannelAccountRepository
 from modules.shared.http.infrastructure import PageResult
 
@@ -15,10 +16,11 @@ class ChannelAccountSearcher:
 
         self.__channel_account_repository = channel_account_repository
 
-    async def search(self, query_params: dict) -> PageResult:
+    async def search(self, query_params: dict, user_id: UUID) -> PageResult:
         """
         Args:
             query_params (dict): query params.
+            user_id (UUID): id of the user making the request, used to scope the search to their business.
         Returns:
             dict: paginated channels.
         """
@@ -29,7 +31,12 @@ class ChannelAccountSearcher:
         limit = query_params.pop("limit", 10)
         page = query_params.pop("page", 1)
 
+        business_id = await self.__channel_account_repository.get_business_id_by_user_id(user_id)
+        if not business_id:
+            return PageResult(page=page, limit=limit, total=0, pages=0, items=[])
+
         cleaned_query_params = {key: value for key, value in query_params.items() if value not in [None, ""]}
+        cleaned_query_params["business_id"] = business_id
 
         channel_account_results: PageResult = await self.__channel_account_repository.simple_search(
             filters=cleaned_query_params,

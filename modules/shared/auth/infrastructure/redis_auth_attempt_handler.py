@@ -1,3 +1,4 @@
+from datetime import timedelta
 from redis.asyncio import Redis
 from modules.shared.environ.domain import Environ
 from modules.shared.auth.domain import AuthAttemptHandler
@@ -10,6 +11,14 @@ class RedisAuthAttemptHandler(AuthAttemptHandler):
 
     async def is_blocked(self, email: str) -> bool:
         return await self.__redis.exists(self._blocked_key(email)) == 1
+
+    async def get_remaining_time(self, email: str) -> timedelta | None:
+        ttl = await self.__redis.ttl(self._blocked_key(email))
+
+        if ttl <= 0:
+            return None
+
+        return timedelta(seconds=ttl)
 
     async def register_failed_attempt(self, email: str) -> int:
         attempts_key = self._attempts_key(email)

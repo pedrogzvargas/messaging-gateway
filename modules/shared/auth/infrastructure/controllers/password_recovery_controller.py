@@ -29,9 +29,9 @@ class PasswordRecoveryController:
         self.__user_repository = user_repository or PostgresUserRepository(session=self.__session)
         self.__password_reset_token_repository = password_reset_token_repository or RedisPasswordResetTokenRepository(
             redis=Redis(
-                host="localhost",
-                port=6379,
-                decode_responses=True,
+                host=self.__environ.get_str("REDIS_HOST"),
+                port=self.__environ.get_str("REDIS_PORT"),
+                decode_responses=True
             )
         )
         self.__password_recovery_notifier = password_recovery_notifier or EmailPasswordRecoveryNotifier(
@@ -53,14 +53,12 @@ class PasswordRecoveryController:
             response = {
                 "success": True,
                 "message": messages.SUCCESS_MESSAGE,
-                "data": {}
             }, status.HTTP_200_OK
 
         except UserDoesNotExist as ex:
             response = {
                 "success": True,
                 "message": messages.SUCCESS_MESSAGE,
-                "data": {}
             }, status.HTTP_200_OK
             return response
 
@@ -68,7 +66,6 @@ class PasswordRecoveryController:
             response = {
                 "success": False,
                 "message": messages.INTERNAL_SERVER_ERROR,
-                "data": {}
             }, status.HTTP_500_INTERNAL_SERVER_ERROR
             return response
 

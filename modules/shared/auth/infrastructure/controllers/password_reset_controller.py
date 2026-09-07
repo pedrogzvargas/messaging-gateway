@@ -31,15 +31,15 @@ class PasswordResetController:
         self.__user_repository = user_repository or PostgresUserRepository(session=self.__session)
         self.__password_reset_token_repository = password_reset_token_repository or RedisPasswordResetTokenRepository(
             redis=Redis(
-                host="localhost",
-                port=6379,
-                decode_responses=True,
+                host=self.__environ.get_str("REDIS_HOST"),
+                port=self.__environ.get_str("REDIS_PORT"),
+                decode_responses=True
             )
         )
         self.__password_hasher = password_hasher or Argon2PasswordHasher()
         self.__unit_of_work = unit_of_work or AlchemyUnitOfWork(session=self.__session)
 
-    async def recover(self, body: dict):
+    async def reset(self, body: dict):
         try:
             password_reset = PasswordReset(
                 user_repository=self.__user_repository,
@@ -53,14 +53,12 @@ class PasswordResetController:
             response = {
                 "success": True,
                 "message": messages.SUCCESS_MESSAGE,
-                "data": {}
             }, status.HTTP_200_OK
 
         except UserDoesNotExist as ex:
             response = {
                 "success": False,
                 "message": f"{ex}",
-                "data": {}
             }, status.HTTP_404_NOT_FOUND
             return response
 
@@ -68,7 +66,6 @@ class PasswordResetController:
             response = {
                 "success": False,
                 "message": messages.INTERNAL_SERVER_ERROR,
-                "data": {}
             }, status.HTTP_500_INTERNAL_SERVER_ERROR
             return response
 

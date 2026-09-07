@@ -7,11 +7,28 @@ class Login(BaseModel):
     password: str
 
 
-class RefreshToken(BaseModel):
+class LoginResponseBody(BaseModel):
+    access_token: str
     refresh_token: str
 
 
-class Logout(BaseModel):
+class LoginResponse(BaseModel):
+    success: bool
+    message: str
+    data: LoginResponseBody
+
+
+class RetryAfterData(BaseModel):
+    retry_after: int
+
+
+class TooManyLoginAttemptsResponse(BaseModel):
+    success: bool
+    message: str
+    data: RetryAfterData
+
+
+class RefreshToken(BaseModel):
     refresh_token: str
 
 
@@ -22,3 +39,8 @@ class ForgotPassword(BaseModel):
 class ResetPassword(BaseModel):
     token: str
     password: str
+
+
+class ChangePassword(BaseModel):
+    password: str
+    new_password: str

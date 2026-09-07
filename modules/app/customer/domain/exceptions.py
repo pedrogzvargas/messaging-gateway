@@ -1,0 +1,2 @@
+class CustomerDoesNotExist(Exception):
+    pass

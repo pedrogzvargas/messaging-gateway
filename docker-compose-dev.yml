@@ -1,51 +1,39 @@
 services:
 
   app:
-    build:
-      context: .
-      dockerfile: compose/app/Dockerfile
-    container_name: messaging_gateway_app
-    restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
-    env_file: .env
-    command: /start_app.sh
+    ports:
+      - "8000:80"
 
   worker:
-    build:
-      context: .
-      dockerfile: compose/worker/Dockerfile
-    container_name: messaging_gateway_worker
     restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
-    env_file: .env
-    command: /start_app.sh
 
   postgres:
-    image: pgvector/pgvector:pg16
-    container_name: messaging_gateway_db
-    restart: unless-stopped
-    env_file: .env
-    healthcheck:
-      # test: /usr/bin/pg_isready
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 10s
-      retries: 120
-    volumes:
-      - ${POSTGRES_DATA}:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   redis:
-    image: redis:7-alpine
-    container_name: messaging_gateway_redis
-    restart: unless-stopped
-    volumes:
-      - ${REDIS_DATA}:/data
-    command: redis-server --appendonly yes
     ports:
       - "6379:6379"
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: messaging_gateway_redisinsight
+    ports:
+      - "5540:5540"
+    volumes:
+      - ${REDISINSIGHT_DATA}:/data
+    depends_on:
+      - redis
+
+  caddy:
+    image: caddy:2.8-alpine
+    container_name: caddy
+    restart: unless-stopped
+    mem_limit: 512m
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./compose/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ${CADDY_DATA}:/data
+      - ${CADDY_CONFIG}:/config

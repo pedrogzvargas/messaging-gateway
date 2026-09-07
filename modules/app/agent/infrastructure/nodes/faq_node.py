@@ -1,4 +1,4 @@
-from app.agent.application import FAQ
+from modules.app.agent.application import FAQ
 
 
 class FAQNode:
@@ -7,5 +7,9 @@ class FAQNode:
         self.service = service
 
     async def __call__(self, state):
-        response = await self.service.execute(question=state.message, conversation_id=state.conversation_id)
+        response = await self.service.execute(
+            question=state.message,
+            conversation_id=state.conversation_id,
+            business_id=state.business_id,
+        )
         return {"response": response}

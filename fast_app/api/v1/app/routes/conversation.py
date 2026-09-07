@@ -7,6 +7,7 @@ from fast_app.core.db_session import get_session
 from fast_app.api.v1.app.schemas import ConversationQueryParams
 from modules.app.conversation.infrastructure import ConversationSearcherController
 from modules.app.conversation.infrastructure import ConversationFinderController
+from fast_app.core.auth import require_permission
 
 router = APIRouter()
 
@@ -15,11 +16,14 @@ async def list_conversations(
     response: Response,
     query_params: Annotated[ConversationQueryParams, Depends()],
     db_session = Depends(get_session),
-    # dependencies = (Depends(require_permission("customer:list"))),
+    current_user = Depends(require_permission("conversations:view:owner")),
 ):
     query_params = query_params.model_dump(exclude_none=True)
     conversation_searcher_controller = ConversationSearcherController(session=db_session)
-    controller_response, code = await conversation_searcher_controller.search(query_params=query_params)
+    controller_response, code = await conversation_searcher_controller.search(
+        query_params=query_params,
+        user_id=UUID(current_user["sub"]),
+    )
     response.status_code = code
     return controller_response
 
@@ -28,9 +32,12 @@ async def get_conversation(
     response: Response,
     conversation_id: UUID,
     db_session = Depends(get_session),
-    # dependencies = (Depends(require_permission("customer:list"))),
+    current_user = Depends(require_permission("conversations:view:owner")),
 ):
     conversation_finder_controller = ConversationFinderController(session=db_session)
-    controller_response, code = await conversation_finder_controller.find(conversation_id=conversation_id)
+    controller_response, code = await conversation_finder_controller.find(
+        conversation_id=conversation_id,
+        user_id=UUID(current_user["sub"]),
+    )
     response.status_code = code
     return controller_response

@@ -18,6 +18,7 @@ from .mapper import mapper_registry
 class RefreshTokenModel:
     id: UUID
     user_id: UUID
+    session_id: UUID
     jti: str
     revoked: bool
     created_at: Optional[datetime] = None
@@ -28,6 +29,7 @@ refresh_token_table = Table(
     metadata,
     Column("id", postgresql.UUID(as_uuid=True), primary_key=True),
     Column("user_id", postgresql.UUID(as_uuid=True), ForeignKey("user.id", ondelete="RESTRICT"), nullable=False),
+    Column("session_id", postgresql.UUID(as_uuid=True), ForeignKey("session.id", ondelete="RESTRICT"), nullable=False),
     Column("jti", postgresql.UUID(as_uuid=True), nullable=False, unique=True),
     Column("revoked", Boolean(), default=False, server_default=text("false"), nullable=False),
     Column("created_at", DateTime(timezone=True), nullable=False, default=func.now(), server_default=func.now()),

@@ -19,7 +19,7 @@ from modules.app.channel_account.infrastructure import PgChannelAccountRepositor
 from modules.app.contact.infrastructure import PgContactRepository
 from modules.shared.persistence.infrastructure import AsyncAlchemySessionCreator
 from modules.shared.environ.infrastructure import PyEnviron
-from modules.shared.bus.event.infrastructure import RedisEventBus
+from modules.shared.bus.event.infrastructure.redis import RedisEventBus
 from redis.asyncio import Redis
 
 
@@ -43,7 +43,8 @@ class WebhookEventCreatedSubscriber:
                 host=self.__environ.get_str("REDIS_HOST"),
                 port=self.__environ.get_str("REDIS_PORT"),
                 decode_responses=True
-            )
+            ),
+            stream_name=self.__environ.get_str("MESSAGE_QUEUE_NAME"),
         )
         self.__session = session or AsyncAlchemySessionCreator(
             dialect=self.__environ.get_str("POSTGRES_DIALECT"),

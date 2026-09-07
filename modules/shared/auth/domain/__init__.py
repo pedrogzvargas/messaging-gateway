@@ -3,7 +3,7 @@ from .auth_attempt_handler import AuthAttemptHandler
 from .password_recovery_notifier import PasswordRecoveryNotifier
 from .exceptions import WrongCredentials
 from .exceptions import UserDoesNotExist
-from .exceptions import LockedAccount
+from .exceptions import TemporarilyLocketAccount
 from .exceptions import ExpiredTokenError
 
 
@@ -13,6 +13,6 @@ __all__ = [
     "PasswordRecoveryNotifier",
     "WrongCredentials",
     "UserDoesNotExist",
-    "LockedAccount",
+    "TemporarilyLocketAccount",
     "ExpiredTokenError",
 ]

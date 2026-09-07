@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc
 from sqlalchemy import func
@@ -8,6 +9,8 @@ from sqlalchemy_models import ConversationModel
 from sqlalchemy_models import ChannelAccountModel
 from sqlalchemy_models import ChannelModel
 from sqlalchemy_models import ContactModel
+from sqlalchemy_models import BusinessModel
+from sqlalchemy_models import CustomerModel
 from modules.app.conversation.application import ConversationItem
 from modules.shared.http.infrastructure import PageResult
 from .conversation_mapper import ConversationMapper
@@ -34,6 +37,7 @@ class PgConversationRepository(ConversationRepository):
             "channel": (ChannelModel.name, "contains"),
             "provider_id": (ContactModel.provider_id, "contains"),
             "name": (ContactModel.display_name, "contains"),
+            "business_id": (ChannelAccountModel.business_id, "eq"),
         }
 
         stmt = select(
@@ -95,8 +99,8 @@ class PgConversationRepository(ConversationRepository):
 
         return None
 
-    async def get_detail(self, id: UUID):
-        """get conversation detail"""
+    async def get_detail(self, id: UUID, business_id: UUID | None = None):
+        """get conversation detail, optionally scoped to a business"""
         stmt = select(
             ConversationModel.id,
             ChannelModel.name.label("channel"),
@@ -113,6 +117,10 @@ class PgConversationRepository(ConversationRepository):
         ).where(
             ConversationModel.id == id
         )
+
+        if business_id is not None:
+            stmt = stmt.where(ChannelAccountModel.business_id == business_id)
+
         query_result = await self.__session.execute(stmt)
         conversation = query_result.mappings().one_or_none()
 
@@ -138,3 +146,39 @@ class PgConversationRepository(ConversationRepository):
             return None
 
         return ConversationMapper.to_domain(conversation)
+
+    async def get_business_id_by_user_id(self, user_id: UUID): # TODO Fix when we has many business
+        """get the business id owned by the given user"""
+
+        stmt = select(BusinessModel.id).join(
+            CustomerModel, BusinessModel.customer_id == CustomerModel.id
+        ).where(
+            CustomerModel.user_id == user_id
+        )
+
+        return await self.__session.scalar(stmt)
+
+    async def get_business_id_by_conversation_id(self, conversation_id: UUID):
+        """get the business id owned by the given user"""
+
+        stmt = select(ChannelAccountModel.business_id).join(
+            ConversationModel, ChannelAccountModel.id == ConversationModel.channel_account_id
+        ).where(
+            ConversationModel.id == conversation_id
+        )
+
+        return await self.__session.scalar(stmt)
+
+    async def count_by_business_id(self, business_id: UUID, since: datetime | None = None) -> int:
+        """count conversations owned by the given business, optionally created since a given datetime"""
+
+        stmt = select(func.count(ConversationModel.id)).join(
+            ChannelAccountModel, ConversationModel.channel_account_id == ChannelAccountModel.id
+        ).where(
+            ChannelAccountModel.business_id == business_id
+        )
+
+        if since is not None:
+            stmt = stmt.where(ConversationModel.created_at >= since)
+
+        return await self.__session.scalar(stmt) or 0

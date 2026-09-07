@@ -4,8 +4,10 @@ services:
     build:
       context: .
       dockerfile: compose/app/Dockerfile
+    image: messaging-app
     container_name: messaging_gateway_app
     restart: unless-stopped
+    mem_limit: 2g
     depends_on:
       postgres:
         condition: service_healthy
@@ -15,26 +17,31 @@ services:
   worker:
     build:
       context: .
-      dockerfile: compose/worker/Dockerfile
+      dockerfile: compose/app/Dockerfile
+    image: messaging-worker
     container_name: messaging_gateway_worker
     restart: unless-stopped
+    mem_limit: 2g
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     env_file: .env
-    command: /start_app.sh
+    command: /start_worker.sh
 
   postgres:
     image: pgvector/pgvector:pg16
     container_name: messaging_gateway_db
     restart: unless-stopped
+    mem_limit: 1g
     env_file: .env
     healthcheck:
       # test: /usr/bin/pg_isready
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 10s
-      retries: 120
+      retries: 20
     volumes:
       - ${POSTGRES_DATA}:/var/lib/postgresql/data
 
@@ -42,18 +49,13 @@ services:
     image: redis:7-alpine
     container_name: messaging_gateway_redis
     restart: unless-stopped
+    mem_limit: 512m
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     volumes:
       - ${REDIS_DATA}:/data
-    command: redis-server --appendonly yes
-
-  caddy:
-    image: caddy:latest
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./compose/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ${CADDY_DATA}:/data
-      - ${CADDY_CONFIG}:/config
+    command: redis-server --appendonly yes --appendfsync everysec

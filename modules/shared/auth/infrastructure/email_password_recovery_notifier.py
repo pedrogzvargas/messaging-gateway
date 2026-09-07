@@ -1,3 +1,4 @@
+from jinja2 import Template
 from email.mime.text import MIMEText
 import smtplib
 from modules.shared.auth.domain import PasswordRecoveryNotifier
@@ -18,17 +19,12 @@ class EmailPasswordRecoveryNotifier(PasswordRecoveryNotifier):
 
         subject = "Recuperación de contraseña"
 
-        body = f"""
-            Hola,
+        with open("modules/shared/auth/infrastructure/template.html", "r", encoding="utf-8") as file:
+            template = Template(file.read())
 
-            Haz clic aquí:
+        html = template.render(link=link)
 
-            {link}
-
-            Este enlace expira en 15 minutos.
-        """
-
-        msg = MIMEText(body, "html")
+        msg = MIMEText(html, "html", "utf-8")
         msg["From"] = email_user
         msg["To"] = user.email
         msg["Subject"] = subject

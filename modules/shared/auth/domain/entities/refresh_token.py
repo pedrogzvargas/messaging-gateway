@@ -6,20 +6,22 @@ class RefreshToken(AggregateRoot):
     RefreshToken entity
     """
 
-    def __init__(self, id, user_id, jti, revoked, created_at, updated_at):
+    def __init__(self, id, user_id, session_id, jti, revoked, created_at, updated_at):
         super().__init__()
         self.id = id
         self.user_id = user_id
+        self.session_id = session_id
         self.jti = jti
         self.revoked = revoked
         self.created_at = created_at
         self.updated_at = updated_at
 
     @staticmethod
-    def create(id, user_id, jti, revoked=False, created_at=None, updated_at=None):
+    def create(id, user_id, session_id, jti, revoked=False, created_at=None, updated_at=None):
         return RefreshToken(
             id=id,
             user_id=user_id,
+            session_id=session_id,
             jti=jti,
             revoked=revoked,
             created_at=created_at,
@@ -35,6 +37,7 @@ class RefreshToken(AggregateRoot):
         return dict(
             id=self.id,
             user_id=self.user_id,
+            session_id=self.session_id,
             jti=self.jti,
             revoked=self.revoked,
             created_at=self.created_at,

@@ -7,6 +7,7 @@ from modules.app.channel_account.domain import ChannelAccountRepository
 from sqlalchemy_models import ChannelAccountModel
 from sqlalchemy_models import ChannelModel
 from sqlalchemy_models import BusinessModel
+from sqlalchemy_models import CustomerModel
 from modules.shared.http.infrastructure import PageResult
 from modules.app.channel_account.application import ChannelAccountItem
 from .channel_account_mapper import ChannelAccountMapper
@@ -48,6 +49,7 @@ class PgChannelAccountRepository(ChannelAccountRepository):
         allowed_filters = {
             "channel": (ChannelModel.name, "contains"),
             "business": (BusinessModel.name, "contains"),
+            "business_id": (BusinessModel.id, "eq"),
             "provider_id": (ChannelAccountModel.provider_id, "contains"),
         }
 
@@ -56,6 +58,7 @@ class PgChannelAccountRepository(ChannelAccountRepository):
             ChannelModel.name.label("channel"),
             BusinessModel.name.label("business"),
             ChannelAccountModel.provider_id,
+            ChannelAccountModel.display_name,
             ChannelAccountModel.created_at,
             ChannelAccountModel.updated_at,
         ).join(
@@ -97,3 +100,14 @@ class PgChannelAccountRepository(ChannelAccountRepository):
             pages=pages,
             items=results,
         )
+
+    async def get_business_id_by_user_id(self, user_id: UUID):
+        """get the business id owned by the given user"""
+
+        stmt = select(BusinessModel.id).join(
+            CustomerModel, BusinessModel.customer_id == CustomerModel.id
+        ).where(
+            CustomerModel.user_id == user_id
+        )
+
+        return await self.__session.scalar(stmt)

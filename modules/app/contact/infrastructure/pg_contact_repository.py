@@ -7,6 +7,8 @@ from modules.app.contact.domain import ContactRepository
 from sqlalchemy_models import ContactModel
 from sqlalchemy_models import ChannelModel
 from sqlalchemy_models import ChannelAccountModel
+from sqlalchemy_models import BusinessModel
+from sqlalchemy_models import CustomerModel
 from modules.shared.http.infrastructure import PageResult
 from modules.app.contact.application import ContactItem
 from .contact_mapper import ContactMapper
@@ -54,6 +56,7 @@ class PgContactRepository(ContactRepository):
         allowed_filters = {
             "channel": (ChannelModel.name, "contains"),
             "display_name": (ContactModel.display_name, "contains"),
+            "business_id": (ChannelAccountModel.business_id, "eq"),
         }
 
         stmt = select(
@@ -102,3 +105,14 @@ class PgContactRepository(ContactRepository):
             pages=pages,
             items=results,
         )
+
+    async def get_business_id_by_user_id(self, user_id: UUID):
+        """get the business id owned by the given user"""
+
+        stmt = select(BusinessModel.id).join(
+            CustomerModel, BusinessModel.customer_id == CustomerModel.id
+        ).where(
+            CustomerModel.user_id == user_id
+        )
+
+        return await self.__session.scalar(stmt)

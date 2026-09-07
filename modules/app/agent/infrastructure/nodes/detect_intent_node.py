@@ -1,4 +1,4 @@
-from app.agent.application import DetectIntent
+from modules.app.agent.application import DetectIntent
 
 
 class DetectIntentNode:

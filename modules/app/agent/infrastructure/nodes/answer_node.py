@@ -1,4 +1,4 @@
-from app.agent.application import Answer
+from modules.app.agent.application import Answer
 
 
 class AnswerNode:

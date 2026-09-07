@@ -1,4 +1,4 @@
-from app.agent.application import Other
+from modules.app.agent.application import Other
 
 
 class OtherNode:

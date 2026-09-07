@@ -27,7 +27,7 @@ class PasswordRecovery:
 
         token = token_urlsafe(32)
 
-        # self.__password_recovery_notifier.send_reset_link(user=user, token=token)
+        self.__password_recovery_notifier.send_reset_link(user=user, token=token)
         await self.__password_reset_token_repository.save(
             token=token,
             user_id=user.id,

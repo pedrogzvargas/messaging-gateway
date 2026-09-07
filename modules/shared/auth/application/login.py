@@ -5,17 +5,19 @@ from datetime import timedelta
 from modules.shared.persistence.domain import UnitOfWork
 from modules.shared.password_hasher.domain import PasswordHasher
 from modules.shared.auth.domain.entities import RefreshToken
+from modules.shared.auth.domain.entities import Session
 from modules.shared.auth.domain import TokenHandler
 from modules.shared.auth.domain import AuthAttemptHandler
 from modules.shared.auth.domain.repositories import UserRepository
 from modules.shared.auth.domain.repositories import RefreshTokenRepository
+from modules.shared.auth.domain.repositories import SessionRepository
 from modules.shared.auth.domain.repositories import UserRoleRepository
 from modules.shared.auth.domain.repositories import RoleRepository
 from modules.shared.auth.domain.repositories import PermissionRepository
 from modules.shared.auth.domain.repositories import RolePermissionRepository
 from modules.shared.auth.domain import UserDoesNotExist
 from modules.shared.auth.domain import WrongCredentials
-from modules.shared.auth.domain import LockedAccount
+from modules.shared.auth.domain import TemporarilyLocketAccount
 
 
 class Login:
@@ -29,9 +31,12 @@ class Login:
         permission_repository: PermissionRepository,
         role_permission_repository: RolePermissionRepository,
         refresh_token_repository: RefreshTokenRepository,
+        session_repository: SessionRepository,
         password_hasher: PasswordHasher,
         token_handler: TokenHandler,
         auth_attempt_handler: AuthAttemptHandler,
+        access_token_exp: int,
+        refresh_token_exp: int,
     ):
 
         self.__user_repository = user_repository
@@ -40,14 +45,18 @@ class Login:
         self.__permission_repository = permission_repository
         self.__role_permission_repository = role_permission_repository
         self.__refresh_token_repository = refresh_token_repository
+        self.__session_repository = session_repository
         self.__unit_of_work = unit_of_work
         self.__password_hasher = password_hasher
         self.__token_handler = token_handler
         self.__auth_attempt_handler = auth_attempt_handler
+        self.__access_token_exp = access_token_exp
+        self.__refresh_token_exp = refresh_token_exp
 
     async def login(self, email: str, password: str):
         if await self.__auth_attempt_handler.is_blocked(email=email):
-            raise LockedAccount(f"Account with username: {email} locked")
+            ttl = await self.__auth_attempt_handler.get_remaining_time(email=email)
+            raise TemporarilyLocketAccount(retry_after=ttl)
 
         user = await self.__user_repository.get_by_email(email=email)
 
@@ -71,6 +80,8 @@ class Login:
         permissions = await self.__permission_repository.list_by_ids(permission_ids)
 
         jti = uuid.uuid4()
+        session_id = uuid.uuid4()
+        refresh_token_exp = datetime.now(timezone.utc) + timedelta(minutes=self.__refresh_token_exp)
 
         access_token_payload = dict(
             sub=str(user.id),
@@ -78,23 +89,27 @@ class Login:
             roles=[role.name for role in roles],
             permissions=[permission.name for permission in permissions],
             jti=str(jti),
+            session_id=str(session_id),
             iat=datetime.now(timezone.utc),
-            exp=datetime.now(timezone.utc) + timedelta(minutes=15),
+            exp=datetime.now(timezone.utc) + timedelta(minutes=self.__access_token_exp),
         )
 
         refresh_token_payload = dict(
             sub=str(user.id),
             type="refresh",
             jti=str(jti),
+            session_id=str(session_id),
             iat=datetime.now(timezone.utc),
-            exp=datetime.now(timezone.utc) + timedelta(hours=24),
+            exp=refresh_token_exp,
         )
 
         access_token = self.__token_handler.encode(payload=access_token_payload)
         refresh_token = self.__token_handler.encode(payload=refresh_token_payload)
-        refresh_token_entity = RefreshToken.create(id=jti, user_id=user.id, jti=jti)
+        session_entity = Session.create(id=session_id, user_id=user.id, expires_at=refresh_token_exp)
+        refresh_token_entity = RefreshToken.create(id=jti, user_id=user.id, session_id=session_id, jti=jti)
 
         async with self.__unit_of_work:
+            await self.__session_repository.add(session=session_entity)
             await self.__refresh_token_repository.add(refresh_token=refresh_token_entity)
 
         return access_token, refresh_token

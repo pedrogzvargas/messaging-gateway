@@ -1,0 +1,14 @@
+[
+  {
+    "id": "33d2437c-a92f-4055-b01b-efa50062e5fa",
+    "name": "starter",
+    "token_limit": 1000000,
+    "is_active": true
+  },
+  {
+    "id": "73915d17-f68d-4909-94da-7fa0634f0156",
+    "name": "professional",
+    "token_limit": 5000000,
+    "is_active": false
+  }
+]

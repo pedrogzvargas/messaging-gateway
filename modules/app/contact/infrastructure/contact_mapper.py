@@ -11,6 +11,8 @@ class ContactMapper:
             channel_account_id=entity.channel_account_id,
             provider_id=entity.provider_id,
             display_name=entity.display_name,
+            created_at=entity.created_at,
+            updated_at=entity.updated_at,
         )
 
     @staticmethod
